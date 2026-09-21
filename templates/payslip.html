@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Payslip - {{ slip.emp_name }}{% endblock %}
+
+{% block content %}
+<div class="payslip-container">
+    <div class="payslip-header">
+        <h1>Salary Payslip</h1>
+        <a href="{{ url_for('employees') }}" class="btn btn-secondary no-print">← Back</a>
+    </div>
+
+    <div class="payslip-info">
+        <div><strong>Employee ID:</strong> {{ slip.emp_id }}</div>
+        <div><strong>Name:</strong> {{ slip.emp_name }}</div>
+        <div><strong>Department:</strong> {{ slip.dept_name }} ({{ slip.dept_id }})</div>
+        <div><strong>Attendance:</strong> {{ slip.days_present }}/{{ total_working_days }} days ({{ slip.attendance_pct }}%)</div>
+        <div><strong>Overtime:</strong> {{ slip.overtime_hours }} hrs @ ${{ slip.overtime_rate }}/hr</div>
+    </div>
+
+    <table class="payslip-table">
+        <tr>
+            <td>Fixed Basic Salary</td>
+            <td class="amount">${{ "{:,.2f}".format(slip.fixed_basic) }}</td>
+        </tr>
+        <tr>
+            <td>Earned Basic Salary</td>
+            <td class="amount">${{ "{:,.2f}".format(slip.earned_basic) }}</td>
+        </tr>
+        <tr>
+            <td>Overtime Allowance</td>
+            <td class="amount">${{ "{:,.2f}".format(slip.overtime_pay) }}</td>
+        </tr>
+        <tr class="total-row">
+            <td>GROSS SALARY</td>
+            <td class="amount">${{ "{:,.2f}".format(slip.gross_salary) }}</td>
+        </tr>
+        <tr class="section-header"><td colspan="2">Deductions</td></tr>
+        <tr>
+            <td>Income Tax (10%)</td>
+            <td class="amount negative">-${{ "{:,.2f}".format(slip.tax_deduction) }}</td>
+        </tr>
+        <tr>
+            <td>Provident Fund (5%)</td>
+            <td class="amount negative">-${{ "{:,.2f}".format(slip.pf_deduction) }}</td>
+        </tr>
+        <tr>
+            <td>Total Deductions</td>
+            <td class="amount negative">-${{ "{:,.2f}".format(slip.total_deductions) }}</td>
+        </tr>
+        <tr class="net-row">
+            <td>NET SALARY PAYABLE</td>
+            <td class="amount">$
