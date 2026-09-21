@@ -1,11 +1,11 @@
 """
-Core payroll business logic.
-Contains Department, Employee, and PayrollSystem classes.
+Core payroll business logic: Department, Employee, PayrollSystem.
+Handles salary calculations and CSV persistence.
 """
 
 import csv
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Dict, List, Optional
 
 
@@ -40,12 +40,11 @@ class Employee:
         tax_rate: float = 0.10,
         pf_rate: float = 0.05,
     ) -> Dict[str, float]:
-        """Calculates attendance %, earned basic, overtime pay, deductions, net salary."""
+        """Compute attendance %, earned basic, OT pay, deductions, net salary."""
         attendance_pct = (
             (self.days_present / total_working_days) * 100
             if total_working_days > 0 else 0.0
         )
-
         daily_rate = (
             self.basic_salary / total_working_days
             if total_working_days > 0 else 0.0
@@ -94,7 +93,7 @@ class PayrollSystem:
         self.csv_file = csv_file
         self.load_from_csv()
 
-    # ------------------ Persistence (CSV) ------------------
+    # ------------------ CSV Persistence ------------------
 
     def save_to_csv(self) -> bool:
         fieldnames = [
@@ -133,7 +132,7 @@ class PayrollSystem:
         except Exception as e:
             print(f"[-] Error loading CSV data: {e}")
 
-    # ------------------ Employee Operations ------------------
+    # ------------------ CRUD ------------------
 
     def add_employee(self, emp: Employee) -> bool:
         if emp.emp_id in self.employees:
@@ -148,19 +147,19 @@ class PayrollSystem:
         emp = self.employees.get(emp_id)
         if not emp:
             return False
-        if "emp_name" in kwargs and kwargs["emp_name"]:
+        if kwargs.get("emp_name"):
             emp.emp_name = kwargs["emp_name"]
-        if "dept_id" in kwargs and kwargs["dept_id"]:
+        if kwargs.get("dept_id"):
             emp.department.dept_id = kwargs["dept_id"]
-        if "dept_name" in kwargs and kwargs["dept_name"]:
+        if kwargs.get("dept_name"):
             emp.department.dept_name = kwargs["dept_name"]
-        if "basic_salary" in kwargs and kwargs["basic_salary"] is not None:
+        if kwargs.get("basic_salary") is not None:
             emp.basic_salary = float(kwargs["basic_salary"])
-        if "overtime_rate_per_hour" in kwargs and kwargs["overtime_rate_per_hour"] is not None:
+        if kwargs.get("overtime_rate_per_hour") is not None:
             emp.overtime_rate_per_hour = float(kwargs["overtime_rate_per_hour"])
-        if "days_present" in kwargs and kwargs["days_present"] is not None:
+        if kwargs.get("days_present") is not None:
             emp.days_present = int(kwargs["days_present"])
-        if "overtime_hours" in kwargs and kwargs["overtime_hours"] is not None:
+        if kwargs.get("overtime_hours") is not None:
             emp.overtime_hours = float(kwargs["overtime_hours"])
         return True
 
@@ -178,17 +177,19 @@ class PayrollSystem:
         emp.overtime_hours = ot_hours
         return True
 
-    # ------------------ Reports & Analytics ------------------
+    # ------------------ Reports ------------------
 
     def get_payslip(self, emp_id: str) -> Optional[Dict]:
         emp = self.employees.get(emp_id)
         if not emp:
             return None
         s = emp.calculate_salary_details(self.total_working_days)
-        s["emp_id"] = emp.emp_id
-        s["emp_name"] = emp.emp_name
-        s["dept_id"] = emp.department.dept_id
-        s["dept_name"] = emp.department.dept_name
+        s.update({
+            "emp_id": emp.emp_id,
+            "emp_name": emp.emp_name,
+            "dept_id": emp.department.dept_id,
+            "dept_name": emp.department.dept_name,
+        })
         return s
 
     def get_payroll_summary(self) -> Dict:
@@ -196,17 +197,14 @@ class PayrollSystem:
             return {"employees": [], "totals": {}}
 
         rows = []
-        tot_fixed = tot_earned = tot_ot = tot_gross = tot_ded = tot_net = 0.0
+        tot = {k: 0.0 for k in
+               ["fixed_basic", "earned_basic", "overtime_pay",
+                "gross_salary", "total_deductions", "net_salary"]}
 
         for emp in self.employees.values():
             s = emp.calculate_salary_details(self.total_working_days)
-            tot_fixed += s["fixed_basic"]
-            tot_earned += s["earned_basic"]
-            tot_ot += s["overtime_pay"]
-            tot_gross += s["gross_salary"]
-            tot_ded += s["total_deductions"]
-            tot_net += s["net_salary"]
-
+            for k in tot:
+                tot[k] += s[k]
             rows.append({
                 "emp_id": emp.emp_id,
                 "emp_name": emp.emp_name,
@@ -220,14 +218,7 @@ class PayrollSystem:
                 "net_salary": s["net_salary"],
             })
 
-        totals = {
-            "fixed_basic": round(tot_fixed, 2),
-            "earned_basic": round(tot_earned, 2),
-            "overtime_pay": round(tot_ot, 2),
-            "gross_salary": round(tot_gross, 2),
-            "total_deductions": round(tot_ded, 2),
-            "net_salary": round(tot_net, 2),
-        }
+        totals = {k: round(v, 2) for k, v in tot.items()}
         return {"employees": rows, "totals": totals}
 
     def get_department_summary(self) -> List[Dict]:
@@ -235,32 +226,28 @@ class PayrollSystem:
             return []
 
         dept_data: Dict[str, Dict[str, float]] = {}
-
         for emp in self.employees.values():
-            dname = emp.department.dept_name
+            d = emp.department.dept_name
             s = emp.calculate_salary_details(self.total_working_days)
-            if dname not in dept_data:
-                dept_data[dname] = {
-                    "count": 0, "attn_pct_sum": 0.0,
-                    "ot_pay": 0.0, "gross_pay": 0.0, "net_pay": 0.0,
-                }
-            dept_data[dname]["count"] += 1
-            dept_data[dname]["attn_pct_sum"] += s["attendance_pct"]
-            dept_data[dname]["ot_pay"] += s["overtime_pay"]
-            dept_data[dname]["gross_pay"] += s["gross_salary"]
-            dept_data[dname]["net_pay"] += s["net_salary"]
+            if d not in dept_data:
+                dept_data[d] = {"count": 0, "attn": 0.0, "ot": 0.0, "gross": 0.0, "net": 0.0}
+            dept_data[d]["count"] += 1
+            dept_data[d]["attn"] += s["attendance_pct"]
+            dept_data[d]["ot"] += s["overtime_pay"]
+            dept_data[d]["gross"] += s["gross_salary"]
+            dept_data[d]["net"] += s["net_salary"]
 
-        result = []
-        for dname, m in dept_data.items():
-            result.append({
-                "dept_name": dname,
+        return [
+            {
+                "dept_name": d,
                 "count": m["count"],
-                "avg_attendance": round(m["attn_pct_sum"] / m["count"], 2),
-                "total_overtime_pay": round(m["ot_pay"], 2),
-                "total_gross": round(m["gross_pay"], 2),
-                "total_net": round(m["net_pay"], 2),
-            })
-        return result
+                "avg_attendance": round(m["attn"] / m["count"], 2),
+                "total_overtime_pay": round(m["ot"], 2),
+                "total_gross": round(m["gross"], 2),
+                "total_net": round(m["net"], 2),
+            }
+            for d, m in dept_data.items()
+        ]
 
     def get_all_employees(self) -> List[Dict]:
         return [emp.to_dict() for emp in self.employees.values()]
