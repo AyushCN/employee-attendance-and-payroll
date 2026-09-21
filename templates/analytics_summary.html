@@ -9,41 +9,28 @@
 <div class="empty-state"><p>{{ report.message }}</p></div>
 {% else %}
 
-<!-- KPI CARDS -->
 <div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon">👥</div>
+    <div class="stat-card"><div class="stat-icon">👥</div>
         <div class="stat-value">{{ report.total_employees }}</div>
-        <div class="stat-label">Total Employees</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon">📅</div>
+        <div class="stat-label">Total Employees</div></div>
+    <div class="stat-card"><div class="stat-icon">📅</div>
         <div class="stat-value">{{ report.attendance.average }}%</div>
-        <div class="stat-label">Avg Attendance</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon">⏰</div>
+        <div class="stat-label">Avg Attendance</div></div>
+    <div class="stat-card"><div class="stat-icon">⏰</div>
         <div class="stat-value">{{ report.totals.overtime_hours }}</div>
-        <div class="stat-label">Total OT Hours</div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-icon">💰</div>
+        <div class="stat-label">Total OT Hours</div></div>
+    <div class="stat-card"><div class="stat-icon">💰</div>
         <div class="stat-value">${{ "{:,.2f}".format(report.totals.gross_salary) }}</div>
-        <div class="stat-label">Total Gross Payroll</div>
-    </div>
-    <div class="stat-card highlight">
-        <div class="stat-icon">✅</div>
+        <div class="stat-label">Total Gross Payroll</div></div>
+    <div class="stat-card highlight"><div class="stat-icon">✅</div>
         <div class="stat-value">${{ "{:,.2f}".format(report.totals.net_salary) }}</div>
-        <div class="stat-label">Total Net Payable</div>
-    </div>
+        <div class="stat-label">Total Net Payable</div></div>
     <div class="stat-card {% if report.attendance.below_threshold_count > 0 %}warning{% endif %}">
         <div class="stat-icon">⚠️</div>
         <div class="stat-value">{{ report.attendance.below_threshold_count }}</div>
-        <div class="stat-label">Below {{ report.attendance_threshold }}% Threshold</div>
-    </div>
+        <div class="stat-label">Below {{ report.attendance_threshold }}% Threshold</div></div>
 </div>
 
-<!-- FINANCIAL TOTALS -->
 <section class="report-section">
     <h2>💵 Financial Totals</h2>
     <table class="data-table">
@@ -60,7 +47,6 @@
     </table>
 </section>
 
-<!-- ATTENDANCE HIGHLIGHTS -->
 <section class="report-section">
     <h2>📅 Attendance Highlights</h2>
     <div class="highlight-grid">
@@ -77,51 +63,34 @@
     </div>
 </section>
 
-<!-- TOP OVERTIME EARNERS -->
 <section class="report-section">
     <h2>🏅 Top 5 Overtime Earners</h2>
     {% if report.top_overtime_earners %}
     <table class="data-table">
-        <thead>
-            <tr><th>#</th><th>ID</th><th>Name</th><th>OT Hours</th><th>OT Pay</th></tr>
-        </thead>
+        <thead><tr><th>#</th><th>ID</th><th>Name</th><th>OT Hours</th><th>OT Pay</th></tr></thead>
         <tbody>
             {% for e in report.top_overtime_earners %}
             <tr>
-                <td>{{ loop.index }}</td>
-                <td>{{ e.emp_id }}</td>
-                <td>{{ e.emp_name }}</td>
+                <td>{{ loop.index }}</td><td>{{ e.emp_id }}</td><td>{{ e.emp_name }}</td>
                 <td>{{ e.overtime_hours }}</td>
                 <td><strong>${{ "{:,.2f}".format(e.overtime_pay) }}</strong></td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p class="muted">No overtime recorded.</p>
-    {% endif %}
+    {% else %}<p class="muted">No overtime recorded.</p>{% endif %}
 </section>
 
-<!-- DEPARTMENT BREAKDOWN -->
 <section class="report-section">
     <h2>🏢 Department Breakdown</h2>
     {% if report.departments %}
     <table class="data-table">
-        <thead>
-            <tr>
-                <th>Department</th>
-                <th>Employees</th>
-                <th>Avg Attendance</th>
-                <th>Total OT Pay</th>
-                <th>Total Gross</th>
-                <th>Total Net</th>
-            </tr>
-        </thead>
+        <thead><tr><th>Department</th><th>Employees</th><th>Avg Attendance</th>
+            <th>Total OT Pay</th><th>Total Gross</th><th>Total Net</th></tr></thead>
         <tbody>
             {% for d in report.departments %}
             <tr>
-                <td><strong>{{ d.dept_name }}</strong></td>
-                <td>{{ d.count }}</td>
+                <td><strong>{{ d.dept_name }}</strong></td><td>{{ d.count }}</td>
                 <td>{{ d.avg_attendance }}%</td>
                 <td>${{ "{:,.2f}".format(d.total_overtime_pay) }}</td>
                 <td>${{ "{:,.2f}".format(d.total_gross) }}</td>
@@ -130,32 +99,23 @@
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p class="muted">No department data.</p>
-    {% endif %}
+    {% else %}<p class="muted">No department data.</p>{% endif %}
 </section>
 
-<!-- BELOW THRESHOLD LIST -->
 <section class="report-section">
     <h2>⚠️ Employees Below {{ report.attendance_threshold }}% Threshold</h2>
     {% if report.below_threshold %}
     <table class="data-table">
-        <thead>
-            <tr><th>ID</th><th>Name</th><th>Dept</th><th>Days Present</th><th>Attendance %</th><th>Status</th></tr>
-        </thead>
+        <thead><tr><th>ID</th><th>Name</th><th>Dept</th><th>Days Present</th>
+            <th>Attendance %</th><th>Status</th></tr></thead>
         <tbody>
             {% for e in report.below_threshold %}
             <tr>
                 <td><a href="{{ url_for('payslip', emp_id=e.emp_id) }}">{{ e.emp_id }}</a></td>
-                <td>{{ e.emp_name }}</td>
-                <td>{{ e.dept_name }}</td>
+                <td>{{ e.emp_name }}</td><td>{{ e.dept_name }}</td>
                 <td>{{ e.days_present }} / {{ e.total_working_days }}</td>
                 <td class="negative"><strong>{{ e.attendance_pct }}%</strong></td>
-                <td>
-                    <span class="badge {% if e.status == 'Critical' %}badge-danger{% else %}badge-warning{% endif %}">
-                        {{ e.status }}
-                    </span>
-                </td>
+                <td><span class="badge {% if e.status == 'Critical' %}badge-danger{% else %}badge-warning{% endif %}">{{ e.status }}</span></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -168,6 +128,5 @@
 <div class="report-actions no-print">
     <button onclick="window.print()" class="btn btn-primary">🖨 Print Report</button>
 </div>
-
 {% endif %}
 {% endblock %}
