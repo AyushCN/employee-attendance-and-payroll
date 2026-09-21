@@ -371,3 +371,115 @@ h1 {
     .payslip-info { grid-template-columns: 1fr; }
     .page-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
 }
+
+/* ---------- Progress Bars ---------- */
+.progress-bar {
+    background: var(--border);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.35rem;
+    width: 100%;
+    max-width: 160px;
+}
+.progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.3s;
+}
+.fill-good { background: var(--success); }
+.fill-ok   { background: var(--warning); }
+.fill-bad  { background: var(--danger); }
+
+/* ---------- Badges ---------- */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.badge-success { background: #d1fae5; color: #065f46; }
+.badge-info    { background: #dbeafe; color: #1e40af; }
+.badge-warning { background: #fef3c7; color: #92400e; }
+.badge-danger  { background: #fee2e2; color: #991b1b; }
+
+/* ---------- Report Sections ---------- */
+.report-section {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    margin-bottom: 1.5rem;
+}
+.report-section h2 {
+    font-size: 1.15rem;
+    margin-bottom: 1rem;
+    color: var(--dark);
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0.5rem;
+}
+.report-section .data-table {
+    box-shadow: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+.report-section .amount { text-align: right; font-variant-numeric: tabular-nums; }
+.muted { color: var(--gray); font-style: italic; }
+
+/* ---------- Highlight Grid (best/worst) ---------- */
+.highlight-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+.highlight-card {
+    padding: 1rem 1.25rem;
+    border-radius: 10px;
+    border-left: 5px solid;
+}
+.highlight-card.good { background: #ecfdf5; border-color: var(--success); }
+.highlight-card.bad  { background: #fef2f2; border-color: var(--danger); }
+.highlight-card .label { font-size: 0.8rem; color: var(--gray); text-transform: uppercase; letter-spacing: 0.05em; }
+.highlight-card .name  { font-size: 1.05rem; font-weight: 600; margin: 0.3rem 0; }
+.highlight-card .value { font-size: 1.5rem; font-weight: 700; }
+
+/* ---------- Inline Form (threshold filter) ---------- */
+.inline-form {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: white;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+.inline-form label { font-size: 0.85rem; font-weight: 500; }
+.inline-form input {
+    width: 80px;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+/* ---------- Report Actions ---------- */
+.report-actions {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+/* ---------- Stat card warning variant ---------- */
+.stat-card.warning {
+    border-left: 4px solid var(--warning);
+    background: #fffbeb;
+}
+
+/* ---------- Print overrides for reports ---------- */
+@media print {
+    .report-actions, .inline-form { display: none !important; }
+    .report-section { box-shadow: none; page-break-inside: avoid; }
+}
