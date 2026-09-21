@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Dashboard - Payroll System{% endblock %}
+{% block title %}Dashboard{% endblock %}
 
 {% block content %}
 <h1>Dashboard</h1>
@@ -33,22 +33,19 @@
     </div>
 </div>
 
+<h2 style="margin-top:2rem; margin-bottom:1rem;">Quick Actions</h2>
 <div class="actions-grid">
     <a href="{{ url_for('add_employee') }}" class="action-card">
-        <h3>➕ Add Employee</h3>
-        <p>Register a new employee into the system</p>
+        <h3>➕ Add Employee</h3><p>Register a new employee</p>
     </a>
     <a href="{{ url_for('attendance') }}" class="action-card">
-        <h3>📅 Mark Attendance</h3>
-        <p>Update days present and overtime hours</p>
+        <h3>📅 Mark Attendance</h3><p>Update days present & OT</p>
     </a>
-    <a href="{{ url_for('payroll_summary') }}" class="action-card">
-        <h3>📊 Payroll Summary</h3>
-        <p>View company-wide salary breakdown</p>
+    <a href="{{ url_for('analytics_summary') }}" class="action-card">
+        <h3>📊 Summary Report</h3><p>Full analytics overview</p>
     </a>
-    <a href="{{ url_for('department_summary') }}" class="action-card">
-        <h3>🏢 Department Analytics</h3>
-        <p>Aggregated metrics by department</p>
+    <a href="{{ url_for('analytics_below_threshold') }}" class="action-card">
+        <h3>⚠️ Below Threshold</h3><p>Flag low attendance</p>
     </a>
 </div>
 {% endblock %}
