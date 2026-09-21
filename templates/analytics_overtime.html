@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Overtime Pay{% endblock %}
+
+{% block content %}
+<h1>Overtime Pay Report</h1>
+<p class="subtitle">Overtime Pay = Overtime Hours × Overtime Rate / Hour</p>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">⏰</div>
+        <div class="stat-value">{{ total_ot_hours }}</div>
+        <div class="stat-label">Total OT Hours</div>
+    </div>
+    <div class="stat-card highlight">
+        <div class="stat-icon">💵</div>
+        <div class="stat-value">${{ "{:,.2f}".format(total_ot_pay) }}</div>
+        <div class="stat-label">Total OT Payout</div>
+    </div>
+</div>
+
+{% if records %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>OT Hours</th>
+                <th>Rate / Hour</th>
+                <th>Overtime Pay</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in records %}
+            <tr>
+                <td><strong>{{ r.emp_id }}</strong></td>
+                <td>{{ r.emp_name }}</td>
+                <td>{{ r.overtime_hours }}</td>
+                <td>${{ "{:,.2f}".format(r.overtime_rate) }}</td>
+                <td><strong>${{ "{:,.2f}".format(r.overtime_pay) }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="totals-row">
+                <td colspan="2"><strong>TOTALS</strong></td>
+                <td>{{ total_ot_hours }}</td>
+                <td>—</td>
+                <td><strong>${{ "{:,.2f}".format(total_ot_pay) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% else %}
+<div class="empty-state"><p>No overtime records available.</p></div>
+{% endif %}
+{% endblock %}
