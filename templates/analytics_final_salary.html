@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}Final Salary{% endblock %}
+
+{% block content %}
+<h1>Final Salary Calculation</h1>
+<p class="subtitle">Gross = Earned Basic + Overtime Pay &nbsp;|&nbsp; Net = Gross − Deductions</p>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">💰</div>
+        <div class="stat-value">${{ "{:,.2f}".format(totals.gross) }}</div>
+        <div class="stat-label">Total Gross</div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon">📉</div>
+        <div class="stat-value">-${{ "{:,.2f}".format(totals.deductions) }}</div>
+        <div class="stat-label">Total Deductions</div>
+    </div>
+    <div class="stat-card highlight">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value">${{ "{:,.2f}".format(totals.net) }}</div>
+        <div class="stat-label">Total Net Payable</div>
+    </div>
+</div>
+
+{% if records %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Dept</th>
+                <th>Earned Basic</th>
+                <th>OT Pay</th>
+                <th>Gross</th>
+                <th>Tax</th>
+                <th>PF</th>
+                <th>Net Salary</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in records %}
+            <tr>
+                <td><strong>{{ r.emp_id }}</strong></td>
+                <td>{{ r.emp_name }}</td>
+                <td>{{ r.dept_name }}</td>
+                <td>${{ "{:,.2f}".format(r.earned_basic) }}</td>
+                <td>${{ "{:,.2f}".format(r.overtime_pay) }}</td>
+                <td>${{ "{:,.2f}".format(r.gross_salary) }}</td>
+                <td class="negative">-${{ "{:,.2f}".format(r.tax_deduction) }}</td>
+                <td class="negative">-${{ "{:,.2f}".format(r.pf_deduction) }}</td>
+                <td><strong>${{ "{:,.2f}".format(r.net_salary) }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="totals-row">
+                <td colspan="3"><strong>TOTALS</strong></td>
+                <td>—</td>
+                <td>—</td>
+                <td>${{ "{:,.2f}".format(totals.gross) }}</td>
+                <td colspan="2" class="negative">-${{ "{:,.2f}".format(totals.deductions) }}</td>
+                <td><strong>${{ "{:,.2f}".format(totals.net) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% else %}
+<div class="empty-state"><p>No salary records available.</p></div>
+{% endif %}
+{% endblock %}
