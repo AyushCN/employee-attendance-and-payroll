@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Employees - Payroll System{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Employee Directory</h1>
+    <a href="{{ url_for('add_employee') }}" class="btn btn-primary">+ Add Employee</a>
+</div>
+
+{% if employees %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Basic Salary</th>
+                <th>Days Present</th>
+                <th>OT Hours</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for emp in employees %}
+            <tr>
+                <td><strong>{{ emp.emp_id }}</strong></td>
+                <td>{{ emp.emp_name }}</td>
+                <td>{{ emp.dept_name }} <small>({{ emp.dept_id }})</small></td>
+                <td>${{ "{:,.2f}".format(emp.basic_salary) }}</td>
+                <td>{{ emp.days_present }}</td>
+                <td>{{ emp.overtime_hours }}</td>
+                <td class="actions">
+                    <a href="{{ url_for('payslip', emp_id=emp.emp_id) }}" class="btn btn-sm btn-info">Payslip</a>
+                    <a href="{{ url_for('edit_employee', emp_id=emp.emp_id) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form method="POST" action="{{ url_for('delete_employee', emp_id=emp.emp_id) }}" style="display:inline;" onsubmit="return confirm('Delete this employee?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No employees found. <a href="{{ url_for('add_employee') }}">Add your first employee</a>.</p>
+</div>
+{% endif %}
+{% endblock %}
