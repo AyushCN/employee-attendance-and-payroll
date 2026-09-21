@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Employees - Payroll System{% endblock %}
+{% block title %}Employees{% endblock %}
 
 {% block content %}
 <div class="page-header">
@@ -12,13 +12,8 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Basic Salary</th>
-                <th>Days Present</th>
-                <th>OT Hours</th>
-                <th>Actions</th>
+                <th>ID</th><th>Name</th><th>Department</th><th>Basic Salary</th>
+                <th>Days Present</th><th>OT Hours</th><th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -43,8 +38,6 @@
     </table>
 </div>
 {% else %}
-<div class="empty-state">
-    <p>No employees found. <a href="{{ url_for('add_employee') }}">Add your first employee</a>.</p>
-</div>
+<div class="empty-state"><p>No employees found. <a href="{{ url_for('add_employee') }}">Add your first employee</a>.</p></div>
 {% endif %}
 {% endblock %}
