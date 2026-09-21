@@ -3,7 +3,7 @@
 
 {% block content %}
 <h1>Final Salary Calculation</h1>
-<p class="subtitle">Gross = Earned Basic + Overtime Pay &nbsp;|&nbsp; Net = Gross − Deductions</p>
+<p class="subtitle">Gross = Earned Basic + OT Pay &nbsp;|&nbsp; Net = Gross − Deductions</p>
 
 <div class="stats-grid">
     <div class="stat-card">
@@ -27,24 +27,14 @@
 <div class="table-wrapper">
     <table class="data-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Dept</th>
-                <th>Earned Basic</th>
-                <th>OT Pay</th>
-                <th>Gross</th>
-                <th>Tax</th>
-                <th>PF</th>
-                <th>Net Salary</th>
-            </tr>
+            <tr><th>ID</th><th>Name</th><th>Dept</th><th>Earned Basic</th><th>OT Pay</th>
+                <th>Gross</th><th>Tax</th><th>PF</th><th>Net Salary</th></tr>
         </thead>
         <tbody>
             {% for r in records %}
             <tr>
                 <td><strong>{{ r.emp_id }}</strong></td>
-                <td>{{ r.emp_name }}</td>
-                <td>{{ r.dept_name }}</td>
+                <td>{{ r.emp_name }}</td><td>{{ r.dept_name }}</td>
                 <td>${{ "{:,.2f}".format(r.earned_basic) }}</td>
                 <td>${{ "{:,.2f}".format(r.overtime_pay) }}</td>
                 <td>${{ "{:,.2f}".format(r.gross_salary) }}</td>
@@ -57,8 +47,7 @@
         <tfoot>
             <tr class="totals-row">
                 <td colspan="3"><strong>TOTALS</strong></td>
-                <td>—</td>
-                <td>—</td>
+                <td>—</td><td>—</td>
                 <td>${{ "{:,.2f}".format(totals.gross) }}</td>
                 <td colspan="2" class="negative">-${{ "{:,.2f}".format(totals.deductions) }}</td>
                 <td><strong>${{ "{:,.2f}".format(totals.net) }}</strong></td>
