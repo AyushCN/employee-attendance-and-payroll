@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Below Attendance Threshold{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1>⚠️ Employees Below Attendance Threshold</h1>
+        <p class="subtitle">Current threshold: <strong>{{ threshold }}%</strong></p>
+    </div>
+    <form method="GET" class="inline-form">
+        <label for="threshold">Change threshold:</label>
+        <input type="number" id="threshold" name="threshold"
+               value="{{ threshold }}" min="0" max="100" step="1">
+        <button type="submit" class="btn btn-primary">Apply</button>
+    </form>
+</div>
+
+{% if flagged %}
+<div class="alert alert-warning">
+    <strong>{{ flagged|length }}</strong> employee(s) fall below the
+    <strong>{{ threshold }}%</strong> attendance threshold.
+</div>
+
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Days Present</th>
+                <th>Attendance %</th>
+                <th>Shortfall</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in flagged %}
+            <tr>
+                <td><a href="{{ url_for('payslip', emp_id=e.emp_id) }}">{{ e.emp_id }}</a></td>
+                <td>{{ e.emp_name }}</td>
+                <td>{{ e.dept_name }}</td>
+                <td>{{ e.days_present }} / {{ e.total_working_days }}</td>
+                <td class="negative"><strong>{{ e.attendance_pct }}%</strong></td>
+                <td class="negative">-{{ e.shortfall_pct }}%</td>
+                <td>
+                    <span class="badge {% if e.status == 'Critical' %}badge-danger{% else %}badge-warning{% endif %}">
+                        {{ e.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="alert alert-success">
+    ✅ No employees fall below the {{ threshold }}% attendance threshold.
+</div>
+{% endif %}
+{% endblock %}
