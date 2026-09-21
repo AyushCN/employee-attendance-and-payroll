@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Department Analytics{% endblock %}
+
+{% block content %}
+<h1>Department Payroll Analytics</h1>
+<p class="subtitle">Aggregated metrics grouped by department</p>
+
+{% if departments %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Department</th>
+                <th>Employees</th>
+                <th>Avg Attendance</th>
+                <th>Total Overtime Pay</th>
+                <th>Total Gross</th>
+                <th>Total Net Payable</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for d in departments %}
+            <tr>
+                <td><strong>{{ d.dept_name }}</strong></td>
+                <td>{{ d.count }}</td>
+                <td>{{ d.avg_attendance }}%</td>
+                <td>${{ "{:,.2f}".format(d.total_overtime_pay) }}</td>
+                <td>${{ "{:,.2f}".format(d.total_gross) }}</td>
+                <td><strong>${{ "{:,.2f}".format(d.total_net) }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No department data available yet.</p>
+</div>
+{% endif %}
+{% endblock %}
