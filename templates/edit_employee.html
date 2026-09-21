@@ -1,54 +1,26 @@
 {% extends "base.html" %}
-{% block title %}Edit Employee - Payroll System{% endblock %}
+{% block title %}Edit Employee{% endblock %}
 
 {% block content %}
 <div class="form-container">
-    <h1>Edit Employee: {{ emp.emp_name }}</h1>
+    <h1>Edit: {{ emp.emp_name }}</h1>
     <form method="POST" class="form">
         <div class="form-row">
-            <div class="form-group">
-                <label>Employee ID</label>
-                <input type="text" value="{{ emp.emp_id }}" disabled>
-            </div>
-            <div class="form-group">
-                <label for="emp_name">Employee Name</label>
-                <input type="text" id="emp_name" name="emp_name" value="{{ emp.emp_name }}">
-            </div>
+            <div class="form-group"><label>Employee ID</label><input type="text" value="{{ emp.emp_id }}" disabled></div>
+            <div class="form-group"><label>Employee Name</label><input type="text" name="emp_name" value="{{ emp.emp_name }}"></div>
         </div>
-
         <div class="form-row">
-            <div class="form-group">
-                <label for="dept_id">Department ID</label>
-                <input type="text" id="dept_id" name="dept_id" value="{{ emp.department.dept_id }}">
-            </div>
-            <div class="form-group">
-                <label for="dept_name">Department Name</label>
-                <input type="text" id="dept_name" name="dept_name" value="{{ emp.department.dept_name }}">
-            </div>
+            <div class="form-group"><label>Department ID</label><input type="text" name="dept_id" value="{{ emp.department.dept_id }}"></div>
+            <div class="form-group"><label>Department Name</label><input type="text" name="dept_name" value="{{ emp.department.dept_name }}"></div>
         </div>
-
         <div class="form-row">
-            <div class="form-group">
-                <label for="basic_salary">Fixed Basic Salary</label>
-                <input type="number" step="0.01" id="basic_salary" name="basic_salary" value="{{ emp.basic_salary }}">
-            </div>
-            <div class="form-group">
-                <label for="overtime_rate">Overtime Rate / Hour</label>
-                <input type="number" step="0.01" id="overtime_rate" name="overtime_rate" value="{{ emp.overtime_rate_per_hour }}">
-            </div>
+            <div class="form-group"><label>Fixed Basic Salary</label><input type="number" step="0.01" name="basic_salary" value="{{ emp.basic_salary }}"></div>
+            <div class="form-group"><label>Overtime Rate / Hour</label><input type="number" step="0.01" name="overtime_rate" value="{{ emp.overtime_rate_per_hour }}"></div>
         </div>
-
         <div class="form-row">
-            <div class="form-group">
-                <label for="days_present">Days Present</label>
-                <input type="number" id="days_present" name="days_present" value="{{ emp.days_present }}" min="0" max="22">
-            </div>
-            <div class="form-group">
-                <label for="overtime_hours">Overtime Hours</label>
-                <input type="number" step="0.1" id="overtime_hours" name="overtime_hours" value="{{ emp.overtime_hours }}">
-            </div>
+            <div class="form-group"><label>Days Present</label><input type="number" name="days_present" value="{{ emp.days_present }}" min="0" max="22"></div>
+            <div class="form-group"><label>Overtime Hours</label><input type="number" step="0.1" name="overtime_hours" value="{{ emp.overtime_hours }}"></div>
         </div>
-
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Update Employee</button>
             <a href="{{ url_for('employees') }}" class="btn btn-secondary">Cancel</a>
