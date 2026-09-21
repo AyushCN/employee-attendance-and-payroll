@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Attendance Percentage{% endblock %}
+
+{% block content %}
+<h1>Attendance Percentage Report</h1>
+<p class="subtitle">Attendance = (Days Present ÷ Total Working Days) × 100</p>
+
+{% if records %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Days Present</th>
+                <th>Total Days</th>
+                <th>Attendance %</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in records %}
+            <tr>
+                <td><strong>{{ r.emp_id }}</strong></td>
+                <td>{{ r.emp_name }}</td>
+                <td>{{ r.days_present }}</td>
+                <td>{{ r.total_working_days }}</td>
+                <td>
+                    <div class="progress-bar">
+                        <div class="progress-fill
+                            {% if r.attendance_pct >= 85 %}fill-good
+                            {% elif r.attendance_pct >= 75 %}fill-ok
+                            {% else %}fill-bad{% endif %}"
+                            style="width: {{ r.attendance_pct }}%;">
+                        </div>
+                    </div>
+                    <strong>{{ r.attendance_pct }}%</strong>
+                </td>
+                <td>
+                    <span class="badge
+                        {% if r.status == 'Excellent' %}badge-success
+                        {% elif r.status == 'Good' %}badge-info
+                        {% elif r.status == 'Satisfactory' %}badge-warning
+                        {% else %}badge-danger{% endif %}">
+                        {{ r.status }}
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state"><p>No attendance records available.</p></div>
+{% endif %}
+{% endblock %}
