@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Payroll Summary{% endblock %}
+
+{% block content %}
+<h1>Company Payroll Summary</h1>
+<p class="subtitle">Complete salary breakdown for all employees</p>
+
+{% if summary.employees %}
+<div class="table-wrapper">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Dept</th>
+                <th>Attn %</th>
+                <th>Fixed</th>
+                <th>Earned</th>
+                <th>OT Pay</th>
+                <th>Gross</th>
+                <th>Deductions</th>
+                <th>Net Pay</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in summary.employees %}
+            <tr>
+                <td><a href="{{ url_for('payslip', emp_id=e.emp_id) }}">{{ e.emp_id }}</a></td>
+                <td>{{ e.emp_name }}</td>
+                <td>{{ e.dept_name }}</td>
+                <td>{{ e.attendance_pct }}%</td>
+                <td>${{ "{:,.2f}".format(e.fixed_basic) }}</td>
+                <td>${{ "{:,.2f}".format(e.earned_basic) }}</td>
+                <td>${{ "{:,.2f}".format(e.overtime_pay) }}</td>
+                <td>${{ "{:,.2f}".format(e.gross_salary) }}</td>
+                <td class="negative">-${{ "{:,.2f}".format(e.total_deductions) }}</td>
+                <td><strong>${{ "{:,.2f}".format(e.net_salary) }}</strong></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+        <tfoot>
+            <tr class="totals-row">
+                <td colspan="4"><strong>TOTALS</strong></td>
+                <td>${{ "{:,.2f}".format(summary.totals.fixed_basic) }}</td>
+                <td>${{ "{:,.2f}".format(summary.totals.earned_basic) }}</td>
+                <td>${{ "{:,.2f}".format(summary.totals.overtime_pay) }}</td>
+                <td>${{ "{:,.2f}".format(summary.totals.gross_salary) }}</td>
+                <td class="negative">-${{ "{:,.2f}".format(summary.totals.total_deductions) }}</td>
+                <td><strong>${{ "{:,.2f}".format(summary.totals.net_salary) }}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <p>No payroll data available yet.</p>
+</div>
+{% endif %}
+{% endblock %}
