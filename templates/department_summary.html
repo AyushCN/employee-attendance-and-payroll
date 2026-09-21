@@ -9,14 +9,8 @@
 <div class="table-wrapper">
     <table class="data-table">
         <thead>
-            <tr>
-                <th>Department</th>
-                <th>Employees</th>
-                <th>Avg Attendance</th>
-                <th>Total Overtime Pay</th>
-                <th>Total Gross</th>
-                <th>Total Net Payable</th>
-            </tr>
+            <tr><th>Department</th><th>Employees</th><th>Avg Attendance</th>
+                <th>Total Overtime Pay</th><th>Total Gross</th><th>Total Net Payable</th></tr>
         </thead>
         <tbody>
             {% for d in departments %}
@@ -33,8 +27,6 @@
     </table>
 </div>
 {% else %}
-<div class="empty-state">
-    <p>No department data available yet.</p>
-</div>
+<div class="empty-state"><p>No department data available yet.</p></div>
 {% endif %}
 {% endblock %}
