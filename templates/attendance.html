@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Attendance - Payroll System{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1>Mark Attendance & Overtime</h1>
+    <p class="subtitle">Total working days: <strong>{{ total_working_days }}</strong></p>
+
+    <form method="POST" class="form">
+        <div class="form-group">
+            <label for="emp_id">Employee</label>
+            <select id="emp_id" name="emp_id" required>
+                <option value="">-- Select Employee --</option>
+                {% for emp in employees %}
+                <option value="{{ emp.emp_id }}">
+                    {{ emp.emp_id }} — {{ emp.emp_name }} ({{ emp.dept_name }})
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="days_present">Days Present (0 – {{ total_working_days }})</label>
+                <input type="number" id="days_present" name="days_present" min="0" max="{{ total_working_days }}" required>
+            </div>
+            <div class="form-group">
+                <label for="overtime_hours">Overtime Hours</label>
+                <input type="number" step="0.1" id="overtime_hours" name="overtime_hours" value="0.0">
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Update Attendance</button>
+        </div>
+    </form>
+</div>
+{% endblock %}
