@@ -1,0 +1,21 @@
+emp_id,emp_name,dept_id,dept_name,basic_salary,overtime_rate,days_present,overtime_hours
+E001,Alice Smith,D101,Engineering,6500.0,35.0,22,10.0
+E002,Bob Jones,D102,Human Resources,4500.0,25.0,20,4.5
+E003,Charlie Brown,D101,Engineering,7200.0,40.0,21,8.0
+E004,Diana Prince,D103,Finance,5800.0,30.0,22,2.0
+E005,Evan Wright,D104,Marketing,4800.0,25.0,19,6.0
+E006,Fiona Gallagher,D105,Operations,4200.0,22.0,22,12.0
+E007,George Clark,D101,Engineering,6800.0,36.0,22,5.0
+E008,Hannah Abbott,D102,Human Resources,4600.0,25.0,21,0.0
+E009,Ian Malcolm,D103,Finance,6100.0,32.0,22,7.5
+E010,Julia Roberts,D104,Marketing,5100.0,27.0,18,3.0
+E011,Kevin Bacon,D105,Operations,4400.0,23.0,22,14.0
+E012,Laura Croft,D101,Engineering,8000.0,45.0,22,11.0
+E013,Michael Scott,D105,Operations,5500.0,28.0,20,1.5
+E014,Nina Simone,D102,Human Resources,4900.0,26.0,22,4.0
+E015,Oscar Martinez,D103,Finance,6300.0,33.0,22,6.0
+E016,Pam Beesly,D104,Marketing,4700.0,24.0,21,2.5
+E017,Quinn Fabray,D101,Engineering,6600.0,35.0,22,9.0
+E018,Rachel Green,D104,Marketing,5200.0,28.0,19,5.0
+E019,Steve Rogers,D105,Operations,4600.0,24.0,22,10.0
+E020,Tony Stark,D101,Engineering,8500.0,50.0,22,15.0
