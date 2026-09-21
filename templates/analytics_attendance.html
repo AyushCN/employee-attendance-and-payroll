@@ -9,14 +9,8 @@
 <div class="table-wrapper">
     <table class="data-table">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Days Present</th>
-                <th>Total Days</th>
-                <th>Attendance %</th>
-                <th>Status</th>
-            </tr>
+            <tr><th>ID</th><th>Name</th><th>Days Present</th><th>Total Days</th>
+                <th>Attendance %</th><th>Status</th></tr>
         </thead>
         <tbody>
             {% for r in records %}
@@ -31,8 +25,7 @@
                             {% if r.attendance_pct >= 85 %}fill-good
                             {% elif r.attendance_pct >= 75 %}fill-ok
                             {% else %}fill-bad{% endif %}"
-                            style="width: {{ r.attendance_pct }}%;">
-                        </div>
+                            style="width: {{ r.attendance_pct }}%;"></div>
                     </div>
                     <strong>{{ r.attendance_pct }}%</strong>
                 </td>
@@ -41,9 +34,7 @@
                         {% if r.status == 'Excellent' %}badge-success
                         {% elif r.status == 'Good' %}badge-info
                         {% elif r.status == 'Satisfactory' %}badge-warning
-                        {% else %}badge-danger{% endif %}">
-                        {{ r.status }}
-                    </span>
+                        {% else %}badge-danger{% endif %}">{{ r.status }}</span>
                 </td>
             </tr>
             {% endfor %}
