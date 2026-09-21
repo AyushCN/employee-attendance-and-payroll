@@ -10,24 +10,16 @@
     <table class="data-table">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Dept</th>
-                <th>Attn %</th>
-                <th>Fixed</th>
-                <th>Earned</th>
-                <th>OT Pay</th>
-                <th>Gross</th>
-                <th>Deductions</th>
-                <th>Net Pay</th>
+                <th>ID</th><th>Name</th><th>Dept</th><th>Attn %</th>
+                <th>Fixed</th><th>Earned</th><th>OT Pay</th><th>Gross</th>
+                <th>Deductions</th><th>Net Pay</th>
             </tr>
         </thead>
         <tbody>
             {% for e in summary.employees %}
             <tr>
                 <td><a href="{{ url_for('payslip', emp_id=e.emp_id) }}">{{ e.emp_id }}</a></td>
-                <td>{{ e.emp_name }}</td>
-                <td>{{ e.dept_name }}</td>
+                <td>{{ e.emp_name }}</td><td>{{ e.dept_name }}</td>
                 <td>{{ e.attendance_pct }}%</td>
                 <td>${{ "{:,.2f}".format(e.fixed_basic) }}</td>
                 <td>${{ "{:,.2f}".format(e.earned_basic) }}</td>
@@ -52,8 +44,6 @@
     </table>
 </div>
 {% else %}
-<div class="empty-state">
-    <p>No payroll data available yet.</p>
-</div>
+<div class="empty-state"><p>No payroll data available yet.</p></div>
 {% endif %}
 {% endblock %}
