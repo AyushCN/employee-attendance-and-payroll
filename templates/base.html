@@ -14,9 +14,19 @@
                 <li><a href="{{ url_for('index') }}">Dashboard</a></li>
                 <li><a href="{{ url_for('employees') }}">Employees</a></li>
                 <li><a href="{{ url_for('attendance') }}">Attendance</a></li>
-                <li><a href="{{ url_for('payroll_summary') }}">Payroll Summary</a></li>
+                <li><a href="{{ url_for('payroll_summary') }}">Payroll</a></li>
                 <li><a href="{{ url_for('department_summary') }}">Departments</a></li>
-                <li><a href="{{ url_for('add_employee') }}" class="btn-nav">+ Add Employee</a></li>
+                <li class="dropdown">
+                    <a href="#">Analytics ▾</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{{ url_for('analytics_attendance') }}">1. Attendance %</a></li>
+                        <li><a href="{{ url_for('analytics_overtime') }}">2. Overtime Pay</a></li>
+                        <li><a href="{{ url_for('analytics_final_salary') }}">3. Final Salary</a></li>
+                        <li><a href="{{ url_for('analytics_below_threshold') }}">4. Below Threshold</a></li>
+                        <li><a href="{{ url_for('analytics_summary') }}">5. Summary Report</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ url_for('add_employee') }}" class="btn-nav">+ Add</a></li>
             </ul>
         </div>
     </nav>
